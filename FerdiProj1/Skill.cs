@@ -11,12 +11,13 @@ namespace FerdiProj1
         public string Name { get; }
         public int Damage { get; }
         public int Accuracy { get; }
-
-        public Skill(string name, int damage, int accuracy)
+        public int ManaCost {get; }
+        public Skill(string name, int damage, int accuracy, int manacost)
         {
             Name = name;
             Damage = damage;
             Accuracy = accuracy;
+            ManaCost = manacost;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace FerdiProj1
         public int CRT { get; set; }
         public int Defense { get; set; }
         public int Crit { get; set; }
-        public static int Mana { get; set; }
+        public int Mana { get; set; }
         public List <Skill> Skills { get; set; }
 
 

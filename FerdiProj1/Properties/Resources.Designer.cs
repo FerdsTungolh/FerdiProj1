@@ -79,5 +79,25 @@ namespace FerdiProj1.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dbv1ai5_d28c444d_a424_4933_9ac6_e9c0bab9f58d {
+            get {
+                object obj = ResourceManager.GetObject("dbv1ai5-d28c444d-a424-4933-9ac6-e9c0bab9f58d", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dbv1ai5_d28c444d_a424_4933_9ac6_e9c0bab9f58d1 {
+            get {
+                object obj = ResourceManager.GetObject("dbv1ai5-d28c444d-a424-4933-9ac6-e9c0bab9f58d1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
