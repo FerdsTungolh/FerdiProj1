@@ -14,6 +14,8 @@ namespace FerdiProj1
         private int PreviousHp;
         private int DamageTaken;
         public int PreviousMp;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -23,8 +25,8 @@ namespace FerdiProj1
         private void InitializeGame()
         {
             //Player Health and stats
-            Player1 = new Player("Naruto", 100, 50, 10, 50, 100);
-            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100);
+            Player1 = new Player("Naruto", 100, 50, 10, 50, 100,0);
+            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100,0);
             //Skills 
             Player1.Addskill(new Skill("Basic Attack", 7, 100, 0));
             Player1.Addskill(new Skill("Rasengan", 30, 40, 40));
@@ -94,7 +96,7 @@ namespace FerdiProj1
                 }
                 else if (comboBox1.SelectedIndex == 2 && currentPlayer.Skills[2].ManaCost >= currentPlayer.Mana)
                 {
-                    MessageBox.Show($"{currentPlayer.Name} have not enough chakra");
+                    MessageBox.Show($"{currentPlayer.Name} doesn't have enough chakra");
                     return;
                 }
 
@@ -157,20 +159,31 @@ namespace FerdiProj1
 
             if (opponent.Hp == PreviousHp)
             {
-                label4.ForeColor = Color.Red;
-                label4.Text = $"{currentPlayer.Name} miss the {nameofskill}";
+                label6.ForeColor = Color.Red;
+               
+                label6.Text = $"{currentPlayer.Name} has missed the {nameofskill}";
                 DamageTaken = 0;
                 PreviousHp = 0;
 
             }
             else 
             {
-                label4.ForeColor = Color.Green;
-                label4.Text = $"{currentPlayer.Name} landed {nameofskill} ";
+                label6.ForeColor = Color.Green;
+               
+                if (currentPlayer.Crited == 2)
+                {
+                    label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} damage successfuly crited";
+                }
+                else if (currentPlayer.Crited == 1)
+                {
+                    label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
+
+                }
             }
-            label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
+           
                 DamageTaken = 0;
                 PreviousHp = 0;
+            
 
             if (opponent.Hp == 0)
             {

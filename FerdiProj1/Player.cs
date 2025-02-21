@@ -14,10 +14,12 @@ namespace FerdiProj1
         public int Defense { get; set; }
         public int Crit { get; set; }
         public int Mana { get; set; }
+        public int Crited { get; set; }
+        
         public List <Skill> Skills { get; set; }
 
 
-        public Player(string name, int hp ,int crt, int defense, int crit, int mana)
+        public Player(string name, int hp ,int crt, int defense, int crit, int mana,int crited)
         {
             Name = name;
             Hp = hp;
@@ -25,6 +27,7 @@ namespace FerdiProj1
             Defense = defense;
             Crit = crit;
             Mana = mana;
+            int Crited = crited;
             Skills = new List<Skill>();
         }
         public void Addskill(Skill skill) 
@@ -47,6 +50,7 @@ namespace FerdiProj1
                 damage = Math.Max(5, damage);
                 opponent.Hp -= damage;
                 opponent.Hp = Math.Max(0, opponent.Hp);
+                Crited = 2;
             }
             else 
             {
@@ -54,6 +58,7 @@ namespace FerdiProj1
                 damage = Math.Max(5, damage);
                 opponent.Hp -= damage;
                 opponent.Hp = Math.Max(0, opponent.Hp);
+                Crited = 1;
             }
         }
         public bool isdefeated() 
