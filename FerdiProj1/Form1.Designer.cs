@@ -157,7 +157,6 @@
             progressBar4.Name = "progressBar4";
             progressBar4.Size = new Size(109, 8);
             progressBar4.TabIndex = 14;
-            progressBar4.Click += progressBar4_Click;
             // 
             // comboBox1
             // 

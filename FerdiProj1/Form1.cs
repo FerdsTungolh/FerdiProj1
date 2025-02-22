@@ -14,8 +14,6 @@ namespace FerdiProj1
         private int PreviousHp;
         private int DamageTaken;
         public int PreviousMp;
-
-
         public Form1()
         {
             InitializeComponent();
@@ -162,11 +160,6 @@ namespace FerdiProj1
             progressBar2.Value = Player2.Hp;
             progressBar3.Value = Player1.Mana;
             progressBar4.Value = Player2.Mana;
-        }
-
-        private void progressBar4_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
