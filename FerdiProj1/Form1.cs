@@ -15,7 +15,6 @@ namespace FerdiProj1
         private int DamageTaken;
         public int PreviousMp;
 
-
         public Form1()
         {
             InitializeComponent();
@@ -143,7 +142,6 @@ namespace FerdiProj1
             // Swaping for turn
             SwapTurn();   
         }
-
         private void SwapTurn()
         {
             Player temp = currentPlayer;
@@ -151,7 +149,6 @@ namespace FerdiProj1
             opponent = temp;
             label3.Text = $"{currentPlayer.Name}'s Turn";
         }
-
         private void UpdateUI()
         {
             label1.Text = Player1.Name + ": " + Player1.Hp + "HP";
@@ -162,11 +159,6 @@ namespace FerdiProj1
             progressBar2.Value = Player2.Hp;
             progressBar3.Value = Player1.Mana;
             progressBar4.Value = Player2.Mana;
-        }
-
-        private void progressBar4_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
