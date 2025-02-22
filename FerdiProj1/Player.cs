@@ -80,10 +80,6 @@ namespace FerdiProj1
                 }
             }
         }
-        public bool isdefeated() 
-        {
-            return Hp<=0;
-        }
    }
 
 }
