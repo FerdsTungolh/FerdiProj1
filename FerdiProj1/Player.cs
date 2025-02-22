@@ -65,19 +65,6 @@ namespace FerdiProj1
         {
             return Hp<=0;
         }
-        
-               /* if (CRT > crit)
-                {
-                    opponent.Hp = Math.Max(0, opponent.Hp - (ATK * 2));
-                    return "success critical";
-                }
-                opponent.Hp = Math.Max(0, opponent.Hp - ATK);
-                return "success";
-            }
-            
-            int Damage = ATK - opponent.Defense;
-            */
-           
    }
 
 }

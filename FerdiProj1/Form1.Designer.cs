@@ -78,7 +78,7 @@
             // 
             // progressBar2
             // 
-            progressBar2.Location = new Point(562, 78);
+            progressBar2.Location = new Point(545, 78);
             progressBar2.Margin = new Padding(3, 2, 3, 2);
             progressBar2.Name = "progressBar2";
             progressBar2.Size = new Size(109, 22);
@@ -95,7 +95,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(578, 54);
+            label2.Location = new Point(561, 54);
             label2.Name = "label2";
             label2.Size = new Size(0, 15);
             label2.TabIndex = 6;
@@ -113,10 +113,10 @@
             // 
             pictureBox2.BackColor = Color.Transparent;
             pictureBox2.Image = Properties.Resources._36e60313ea50d1b04317d367c7647022_removebg_preview;
-            pictureBox2.Location = new Point(677, 11);
+            pictureBox2.Location = new Point(660, 11);
             pictureBox2.Margin = new Padding(3, 2, 3, 2);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(117, 287);
+            pictureBox2.Size = new Size(146, 287);
             pictureBox2.TabIndex = 8;
             pictureBox2.TabStop = false;
             // 
@@ -152,7 +152,7 @@
             // 
             // progressBar4
             // 
-            progressBar4.Location = new Point(562, 115);
+            progressBar4.Location = new Point(545, 115);
             progressBar4.Margin = new Padding(3, 2, 3, 2);
             progressBar4.Name = "progressBar4";
             progressBar4.Size = new Size(109, 8);
@@ -182,7 +182,7 @@
             // 
             chp2.AutoSize = true;
             chp2.BackColor = Color.Transparent;
-            chp2.Location = new Point(562, 100);
+            chp2.Location = new Point(545, 100);
             chp2.Name = "chp2";
             chp2.Size = new Size(50, 15);
             chp2.TabIndex = 18;

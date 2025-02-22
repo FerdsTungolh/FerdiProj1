@@ -24,16 +24,19 @@ namespace FerdiProj1
 
         private void InitializeGame()
         {
-            //Player Health and stats
+            //Player Health and Stats
             Player1 = new Player("Naruto", 100, 50, 10, 50, 100,0);
             Player2 = new Player("Sasuke", 100, 50, 5, 50, 100,0);
-            //Skills 
+            //Player 1 Skills Name and Stats
             Player1.Addskill(new Skill("Basic Attack", 7, 100, 0));
-            Player1.Addskill(new Skill("Rasengan", 30, 40, 40));
-            Player1.Addskill(new Skill("Shuriken", 12, 80, 10));
+            Player1.Addskill(new Skill("Shuriken", 15, 80, 10));
+            Player1.Addskill(new Skill("Rasengan", 40, 30, 50));
+            Player1.Addskill(new Skill("Rasen Shuriken", 25, 50, 20));
+            //Player 2 Skills Name and Stats
             Player2.Addskill(new Skill("Basic Attack", 9, 100, 0));
-            Player2.Addskill(new Skill("Chidori", 20, 75, 20));
-            Player2.Addskill(new Skill("Amaterasu", 50, 40, 45));
+            Player2.Addskill(new Skill("Chidori", 15, 80, 10));
+            Player2.Addskill(new Skill("Raikiri", 25, 50, 20));
+            Player2.Addskill(new Skill("Amaterasu", 40, 30, 50));
 
             currentPlayer = Player1;
             opponent = Player2;
@@ -42,156 +45,103 @@ namespace FerdiProj1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            comboBox1.Items.Add($"Basic Attack Damage: 7 | Cost: 0");
-            comboBox1.Items.Add($"Rasengan Damage: 23 | Cost: 40");
-            comboBox1.Items.Add($"Shuriken: 12 | Cost: 10");
+            //Player 1 Skills Description for comboBox selection Automatic 
+            string[] SkillsDes = new string[Player1.Skills.Count];
+
+            for (int i = 0; i < SkillsDes.Length; i++)
+            {
+                SkillsDes[i] = $"{Player1.Skills[i].Name} Dmg:{Player1.Skills[i].Damage} | Mpcost:{Player1.Skills[i].ManaCost}";
+                comboBox1.Items.Add(SkillsDes[i]);
+            }
             comboBox1.SelectedIndex = 0;
         }
         private void button1_Click(object sender, EventArgs e)
         {
-
-
+            // Players Skill Initialization to Attack and Conditions
+            //Checking if player have skills
             if (currentPlayer.Skills.Count == 0)
             {
                 MessageBox.Show($"{currentPlayer.Name} has no skill");
             }
+            //Variable for Damage Calculation
             PreviousHp = opponent.Hp;
-            PreviousMp = currentPlayer.Mana;
+            //Player 1 Skills Conditions and selections
             if (currentPlayer == Player1)
             {
-                if (comboBox1.SelectedIndex == 0 && currentPlayer.Skills[0].ManaCost <= currentPlayer.Mana)
+                if (currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost <= currentPlayer.Mana)
                 {
-
-                    currentPlayer.Useskill(currentPlayer.Skills[0], opponent);
-                    nameofskill = currentPlayer.Skills[0].Name;
-                    currentPlayer.Mana -= currentPlayer.Skills[0].ManaCost;
+                    currentPlayer.Useskill(currentPlayer.Skills[comboBox1.SelectedIndex], opponent);
+                    nameofskill = currentPlayer.Skills[comboBox1.SelectedIndex].Name;
+                    currentPlayer.Mana -= currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost;
                 }
-                else if (comboBox1.SelectedIndex == 0 && currentPlayer.Skills[0].ManaCost >= currentPlayer.Mana)
-                {
-                    MessageBox.Show($"{currentPlayer.Name} have not enough chakra");
-                    return;
-                }
-
-                else if (comboBox1.SelectedIndex == 1 && currentPlayer.Skills[1].ManaCost <= currentPlayer.Mana)
-                {
-
-                    currentPlayer.Useskill(currentPlayer.Skills[1], opponent);
-                    nameofskill = currentPlayer.Skills[1].Name;
-                    currentPlayer.Mana -= currentPlayer.Skills[1].ManaCost;
-
-                }
-                else if (comboBox1.SelectedIndex == 1 && currentPlayer.Skills[1].ManaCost >= currentPlayer.Mana)
-                {
-                    MessageBox.Show($"{currentPlayer.Name} have not enough chakra");
-                    return;
-                }
-
-                else if (comboBox1.SelectedIndex == 2 && currentPlayer.Skills[2].ManaCost <= currentPlayer.Mana)
-                {
-
-                    currentPlayer.Useskill(currentPlayer.Skills[2], opponent);
-                    nameofskill = currentPlayer.Skills[2].Name;
-                    currentPlayer.Mana -= currentPlayer.Skills[2].ManaCost;
-
-                }
-                else if (comboBox1.SelectedIndex == 2 && currentPlayer.Skills[2].ManaCost >= currentPlayer.Mana)
+                else if (currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost > currentPlayer.Mana)
                 {
                     MessageBox.Show($"{currentPlayer.Name} doesn't have enough chakra");
                     return;
                 }
-
             }
+            //Player 2 Skills Conditions and selections Auto skill selection
             else if (currentPlayer == Player2)
             {
-
-                Random ranskill = new Random();
+                Random ranskill = new Random(); 
                 while (true) 
                 {
                     inloop:
-                    if (ranskill.Next(currentPlayer.Skills.Count) == 0 && currentPlayer.Skills[0].ManaCost <= currentPlayer.Mana)
+                    int p2skill = ranskill.Next(currentPlayer.Skills.Count);
+                    if (currentPlayer.Skills[p2skill].ManaCost <= currentPlayer.Mana)
                     {
-
-                        currentPlayer.Useskill(currentPlayer.Skills[0], opponent);
-                        nameofskill = currentPlayer.Skills[0].Name;
-                        currentPlayer.Mana -= currentPlayer.Skills[0].ManaCost;
+                        currentPlayer.Useskill(currentPlayer.Skills[p2skill], opponent);
+                        nameofskill = currentPlayer.Skills[p2skill].Name;
+                        currentPlayer.Mana -= currentPlayer.Skills[p2skill].ManaCost;
                         goto outloop;
-                    }
-                    else if (ranskill.Next(currentPlayer.Skills.Count) == 0 && currentPlayer.Skills[0].ManaCost >= currentPlayer.Mana)
-                    {
-                        goto inloop;
-                    }
-
-                    else if (ranskill.Next(currentPlayer.Skills.Count) == 1 && currentPlayer.Skills[1].ManaCost <= currentPlayer.Mana)
-                    {
-
-                        currentPlayer.Useskill(currentPlayer.Skills[1], opponent);
-                        nameofskill = currentPlayer.Skills[1].Name;
-                        currentPlayer.Mana -= currentPlayer.Skills[1].ManaCost;
-                        goto outloop;
-
-                    }
-                    else if (ranskill.Next(currentPlayer.Skills.Count) == 1 && currentPlayer.Skills[1].ManaCost >= currentPlayer.Mana)
-                    {
-                        goto inloop;
-                    }
-
-                    else if (ranskill.Next(currentPlayer.Skills.Count) == 2 && currentPlayer.Skills[2].ManaCost <= currentPlayer.Mana)
-                    {
-
-                        currentPlayer.Useskill(currentPlayer.Skills[2], opponent);
-                        nameofskill = currentPlayer.Skills[2].Name;
-                        currentPlayer.Mana -= currentPlayer.Skills[2].ManaCost;
-                        goto outloop;
-
-                    }
-                    else if (ranskill.Next(currentPlayer.Skills.Count) == 2 && currentPlayer.Skills[2].ManaCost >= currentPlayer.Mana)
+                    }      
+                    else if (currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost > currentPlayer.Mana)
                     {
                         goto inloop;
                     }
                 }
-            
-           }
+            }
         outloop:
-
+        // Damage Calculations
             DamageTaken = PreviousHp - opponent.Hp;
-
+        // UI for health update
             UpdateUI();
+        // Indicators of skills which skill hit and player damage
 
+            //Attack Miss
             if (opponent.Hp == PreviousHp)
             {
                 label6.ForeColor = Color.Red;
-               
                 label6.Text = $"{currentPlayer.Name} has missed the {nameofskill}";
-                DamageTaken = 0;
-                PreviousHp = 0;
-
             }
+            //Attack Landed
             else 
             {
                 label6.ForeColor = Color.Green;
-               
+               // Attack Crited
                 if (currentPlayer.Crited == 2)
                 {
                     label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} damage successfuly crited";
                 }
+                //Attack Does not Crited
                 else if (currentPlayer.Crited == 1)
                 {
                     label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
-
                 }
             }
-           
+            // To reset the global variable back to 0 instead carrying the previous value
                 DamageTaken = 0;
                 PreviousHp = 0;
-            
-
+            // Checking who win and reseting the game
             if (opponent.Hp == 0)
             {
                 MessageBox.Show($"{currentPlayer.Name} Win!", "Game Over");
+                label6.Text = $"";
                 InitializeGame();
                 return;
             }
-            SwapTurn();
+            // Swaping for turn
+            SwapTurn();   
         }
 
         private void SwapTurn()
