@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FerdiProj1
+﻿namespace FerdiProj1
 {
-   public class Player
+    public class Player
     {
         public string Name { get; set; }
         public int Hp { get; set; }
@@ -14,12 +8,13 @@ namespace FerdiProj1
         public int Defense { get; set; }
         public int Crit { get; set; }
         public int Mana { get; set; }
-        public int Crited { get; set; }
-        public int Healed { get; set; }
-        public List <Skill> Skills { get; set; }
+        public int isCrited { get; set; }
+        public int isHealed { get; set; }
+        public int Manaregenrate { get; set; }
+        public List<Skill> Skills { get; set; }
 
 
-        public Player(string name, int hp ,int crt, int defense, int crit, int mana)
+        public Player(string name, int hp, int crt, int defense, int crit, int mana, int manaregenrate)
         {
             Name = name;
             Hp = hp;
@@ -28,22 +23,23 @@ namespace FerdiProj1
             Crit = crit;
             Mana = mana;
             Skills = new List<Skill>();
+            Manaregenrate = manaregenrate;
         }
-        public void Addskill(Skill skill) 
+        public void Addskill(Skill skill)
         {
-            Skills.Add(skill) ;
+            Skills.Add(skill);
         }
-        public void Useskill(Skill skill, Player opponent, Player currentplayer) 
+        public void Useskill(Skill skill, Player opponent, Player currentplayer)
         {
             Random ran = new Random();
             int hitchance = ran.Next(1, 101);
             int critchance = ran.Next(1, 101);
-            if (hitchance > skill.Accuracy) 
+            if (hitchance > skill.Accuracy)
             {
-                Healed = 0;
+                isHealed = 0;
                 Crit = 0;
                 return;
-            
+
             }
 
             if (critchance > Crit)
@@ -52,26 +48,26 @@ namespace FerdiProj1
                 damage = Math.Max(5, damage);
                 opponent.Hp -= damage;
                 opponent.Hp = Math.Max(0, opponent.Hp);
-                Crited = 2;
-                Healed = 0;
+                isCrited = 2;
+                isHealed = 0;
             }
-            else 
+            else
             {
                 int damage = skill.Damage - opponent.Defense;
                 damage = Math.Max(5, damage);
                 opponent.Hp -= damage;
-                opponent.Hp = Math.Max(0, opponent.Hp);               
-                Crited = 1;
-                Healed = 0;
+                opponent.Hp = Math.Max(0, opponent.Hp);
+                isCrited = 1;
+                isHealed = 0;
             }
         }
-        public void Healskill(int heal, Player player)
+        public void Healskill(int healingval, Player player)
         {
             {
-                if (heal > 0)
+                if (healingval > 0)
                 {
-                    int healing = player.Hp + heal;
-                    Healed = 1;
+                    int healing = player.Hp + healingval;
+                    isHealed = 1;
                     player.Hp = healing;
                     if (player.Hp >= 101)
                     {
@@ -80,6 +76,20 @@ namespace FerdiProj1
                 }
             }
         }
-   }
+        public void Manaregen ( Player player)
+        {
+            {
+                if (player.Mana >= 0)
+                {
+                    int manaregen = player.Manaregenrate + player.Mana;
+                    player.Mana = manaregen;
+                    if (player.Mana >= 101)
+                    {
+                        player.Mana = 100;
+                    }
+                }
+            }
+        }
+    }
 
 }

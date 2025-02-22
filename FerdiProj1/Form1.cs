@@ -1,6 +1,3 @@
-using FerdiProj1.Properties;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-
 namespace FerdiProj1
 {
     public partial class Form1 : Form
@@ -21,8 +18,8 @@ namespace FerdiProj1
         private void InitializeGame()
         {
             //Player Health and Stats
-            Player1 = new Player("Naruto", 100, 50, 10, 50, 100);
-            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100);
+            Player1 = new Player("Naruto", 100, 50, 10, 50, 100,10);
+            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100, 5 );
             //Player 1 Skills Name and Stats
             Player1.Addskill(new Skill("Basic Attack", 7, 95, 0, 0));
             Player1.Addskill(new Skill("Shuriken", 15, 80, 10, 0));
@@ -30,7 +27,7 @@ namespace FerdiProj1
             Player1.Addskill(new Skill("Rasen Shuriken", 25, 50, 20, 0));
             Player1.Addskill(new Skill("Healing Jutsu", 0, 0, 25, 20));
             //Player 2 Skills Name and Stats
-            Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, -5));
+            Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, 0));
             Player2.Addskill(new Skill("Chidori", 20, 80, 10, 0));
             Player2.Addskill(new Skill("Raikiri", 25, 50, 20, 0));
             Player2.Addskill(new Skill("Amaterasu", 40, 30, 50, 0));
@@ -65,6 +62,7 @@ namespace FerdiProj1
         {
             // Players Skill Initialization to Attack and Conditions
             //Checking if player have skills
+            
             if (currentPlayer.Skills.Count == 0)
             {
                 MessageBox.Show($"{currentPlayer.Name} has no skill");
@@ -81,7 +79,7 @@ namespace FerdiProj1
                     currentPlayer.Healskill(currentPlayer.Skills[comboBox1.SelectedIndex].Healing, currentPlayer);
                     nameofskill = currentPlayer.Skills[comboBox1.SelectedIndex].Name;
                     currentPlayer.Mana -= currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost;
-                    
+
                 }
                 else if (currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost > currentPlayer.Mana)
                 {
@@ -92,10 +90,10 @@ namespace FerdiProj1
             //Player 2 Skills Conditions and selections Auto skill selection
             else if (currentPlayer == Player2)
             {
-                Random ranskill = new Random(); 
-                while (true) 
+                Random ranskill = new Random();
+                while (true)
                 {
-                    inloop:
+                inloop:
                     int p2skill = ranskill.Next(currentPlayer.Skills.Count);
                     if (currentPlayer.Skills[p2skill].ManaCost <= currentPlayer.Mana)
                     {
@@ -104,7 +102,7 @@ namespace FerdiProj1
                         nameofskill = currentPlayer.Skills[p2skill].Name;
                         currentPlayer.Mana -= currentPlayer.Skills[p2skill].ManaCost;
                         goto outloop;
-                    }      
+                    }
                     else if (currentPlayer.Skills[p2skill].ManaCost > currentPlayer.Mana)
                     {
                         goto inloop;
@@ -112,25 +110,26 @@ namespace FerdiProj1
                 }
             }
         outloop:
-        // Damage Calculations
+            // Damage Calculations
             int DamageTaken = PreviousHp - opponent.Hp;
-        // UI for health update
+            // UI for health update
+            
             UpdateUI();
             // Indicators of skills which skill hit and player damage
 
             //Attack Miss & Healed indicator
 
-            if (currentPlayer.Hp == previoushp && currentPlayer.Healed == 1)
+            if (currentPlayer.Hp == previoushp && currentPlayer.isHealed == 1)
             {
                 label6.ForeColor = Color.Red;
                 label6.Text = $"{currentPlayer.Name} is an idiot";
             }
-            else if (opponent.Hp == PreviousHp && currentPlayer.Healed == 0)
+            else if (opponent.Hp == PreviousHp && currentPlayer.isHealed == 0)
             {
                 label6.ForeColor = Color.Red;
                 label6.Text = $"{currentPlayer.Name} has missed the {nameofskill}";
             }
-            else if (currentPlayer.Healed == 1)
+            else if (currentPlayer.isHealed == 1)
             {
                 label6.ForeColor = Color.SeaGreen;
                 label6.Text = $"{currentPlayer.Name} has healed {currentPlayer.Hp - previoushp} HP";
@@ -140,12 +139,12 @@ namespace FerdiProj1
             {
                 label6.ForeColor = Color.Green;
                 // Attack Crited
-                if (currentPlayer.Crited == 2)
+                if (currentPlayer.isCrited == 2)
                 {
                     label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} damage successfuly crited";
                 }
                 //Attack Does not Crited
-                else if (currentPlayer.Crited == 1)
+                else if (currentPlayer.isCrited == 1)
                 {
                     label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
                 }
@@ -159,10 +158,11 @@ namespace FerdiProj1
                 return;
             }
             // Swaping for turn
-            SwapTurn();   
+            SwapTurn();
         }
         private void SwapTurn()
         {
+            currentPlayer.Manaregen(currentPlayer);
             Player temp = currentPlayer;
             currentPlayer = opponent;
             opponent = temp;
