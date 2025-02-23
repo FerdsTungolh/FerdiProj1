@@ -33,7 +33,7 @@ namespace FerdiProj1
             Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, 0, "Attack"));
             Player2.Addskill(new Skill("Chidori", 20, 80, 10, 0, "Attack"));
             Player2.Addskill(new Skill("Raikiri", 25, 50, 20, 0, "Attack"));
-            Player2.Addskill(new Skill("Amaterasu", 40, 30, 50, 0, "Attack"));
+            Player2.Addskill(new Skill("Amaterasu", 45, 30, 50, 0, "Attack"));
             Player2.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal"));
 
             currentPlayer = Player1;
