@@ -18,8 +18,8 @@ namespace FerdiProj1
         private void InitializeGame()
         {
             //Player Health and Stats
-            Player1 = new Player("Naruto", 100, 50, 10, 50, 100,10);
-            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100, 5 );
+            Player1 = new Player("Naruto", 100, 50, 10, 50, 100 ,5 );
+            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100 , 5 );
             //Player 1 Skills Name and Stats
             Player1.Addskill(new Skill("Basic Attack", 7, 95, 0, 0));
             Player1.Addskill(new Skill("Shuriken", 15, 80, 10, 0));
@@ -113,38 +113,37 @@ namespace FerdiProj1
             // Damage Calculations
             int DamageTaken = PreviousHp - opponent.Hp;
             // UI for health update
-            
             UpdateUI();
             // Indicators of skills which skill hit and player damage
 
             //Attack Miss & Healed indicator
 
-            if (currentPlayer.Hp == previoushp && currentPlayer.isHealed == 1)
+            if (currentPlayer.Hp == previoushp && currentPlayer.isHealed == true)
             {
                 label6.ForeColor = Color.Red;
                 label6.Text = $"{currentPlayer.Name} is an idiot";
             }
-            else if (opponent.Hp == PreviousHp && currentPlayer.isHealed == 0)
+            else if (opponent.Hp == PreviousHp && currentPlayer.isHealed == false)
             {
                 label6.ForeColor = Color.Red;
                 label6.Text = $"{currentPlayer.Name} has missed the {nameofskill}";
             }
-            else if (currentPlayer.isHealed == 1)
+            else if (currentPlayer.isHealed == true)
             {
                 label6.ForeColor = Color.SeaGreen;
-                label6.Text = $"{currentPlayer.Name} has healed {currentPlayer.Hp - previoushp} HP";
+                label6.Text = $"{currentPlayer.Name} use {nameofskill} and healed {currentPlayer.Hp - previoushp} HP";
             }
             //Attack Landed
             else if (opponent.Hp <= PreviousHp)
             {
                 label6.ForeColor = Color.Green;
                 // Attack Crited
-                if (currentPlayer.isCrited == 2)
+                if (currentPlayer.isCrited == true)
                 {
-                    label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} damage successfuly crited";
+                    label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} critical damage";
                 }
                 //Attack Does not Crited
-                else if (currentPlayer.isCrited == 1)
+                else if (currentPlayer.isCrited == false)
                 {
                     label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
                 }
@@ -162,6 +161,7 @@ namespace FerdiProj1
         }
         private void SwapTurn()
         {
+            opponent.Manaregen(opponent);
             currentPlayer.Manaregen(currentPlayer);
             Player temp = currentPlayer;
             currentPlayer = opponent;

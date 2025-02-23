@@ -8,8 +8,8 @@
         public int Defense { get; set; }
         public int Crit { get; set; }
         public int Mana { get; set; }
-        public int isCrited { get; set; }
-        public int isHealed { get; set; }
+        public bool isCrited;
+        public bool isHealed;
         public int Manaregenrate { get; set; }
         public List<Skill> Skills { get; set; }
 
@@ -36,10 +36,8 @@
             int critchance = ran.Next(1, 101);
             if (hitchance > skill.Accuracy)
             {
-                isHealed = 0;
-                Crit = 0;
+                isCrited = false;
                 return;
-
             }
 
             if (critchance > Crit)
@@ -48,8 +46,7 @@
                 damage = Math.Max(5, damage);
                 opponent.Hp -= damage;
                 opponent.Hp = Math.Max(0, opponent.Hp);
-                isCrited = 2;
-                isHealed = 0;
+                isCrited = true;
             }
             else
             {
@@ -57,8 +54,7 @@
                 damage = Math.Max(5, damage);
                 opponent.Hp -= damage;
                 opponent.Hp = Math.Max(0, opponent.Hp);
-                isCrited = 1;
-                isHealed = 0;
+                isCrited = false;
             }
         }
         public void Healskill(int healingval, Player player)
@@ -67,12 +63,16 @@
                 if (healingval > 0)
                 {
                     int healing = player.Hp + healingval;
-                    isHealed = 1;
+                    isHealed = true;
                     player.Hp = healing;
                     if (player.Hp >= 101)
                     {
                         player.Hp = 100;
                     }
+                }
+                else
+                {
+                    isHealed = false;
                 }
             }
         }
