@@ -1,5 +1,3 @@
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
 namespace FerdiProj1
 {
     public partial class Form1 : Form
@@ -9,7 +7,6 @@ namespace FerdiProj1
         private Player currentPlayer;
         private Player opponent;
         private string nameofskill;
-        private string typeofskill;
         public int PreviousMp;
 
         public Form1()
@@ -21,20 +18,20 @@ namespace FerdiProj1
         private void InitializeGame()
         {
             //Player Health and Stats
-            Player1 = new Player("Naruto", 100, 50, 10, 50, 100, 5);
-            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100, 5);
+            Player1 = new Player("Naruto", 100, 50, 10, 50, 100,10);
+            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100, 5 );
             //Player 1 Skills Name and Stats
-            Player1.Addskill(new Skill("Basic Attack", 7, 95, 0, 0, "Attack"));
-            Player1.Addskill(new Skill("Shuriken", 15, 80, 10, 0, "Attack"));
-            Player1.Addskill(new Skill("Rasengan", 40, 30, 50, 0, "Attack"));
-            Player1.Addskill(new Skill("Rasen Shuriken", 25, 50, 20, 10, "Lifesteal"));
-            Player1.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal"));
+            Player1.Addskill(new Skill("Basic Attack", 7, 95, 0, 0));
+            Player1.Addskill(new Skill("Shuriken", 15, 80, 10, 0));
+            Player1.Addskill(new Skill("Rasengan", 40, 30, 50, 0));
+            Player1.Addskill(new Skill("Rasen Shuriken", 25, 50, 20, 0));
+            Player1.Addskill(new Skill("Healing Jutsu", 0, 0, 25, 20));
             //Player 2 Skills Name and Stats
-            Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, 0, "Attack"));
-            Player2.Addskill(new Skill("Chidori", 20, 80, 10, 0, "Attack"));
-            Player2.Addskill(new Skill("Raikiri", 25, 50, 20, 0, "Attack"));
-            Player2.Addskill(new Skill("Amaterasu", 40, 30, 50, 0, "Attack"));
-            Player2.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal"));
+            Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, 0));
+            Player2.Addskill(new Skill("Chidori", 20, 80, 10, 0));
+            Player2.Addskill(new Skill("Raikiri", 25, 50, 20, 0));
+            Player2.Addskill(new Skill("Amaterasu", 40, 30, 50, 0));
+            Player2.Addskill(new Skill("Healing Jutsu", 0, 0, 25, 20));
 
             currentPlayer = Player1;
             opponent = Player2;
@@ -48,14 +45,9 @@ namespace FerdiProj1
 
             for (int i = 0; i < SkillsDes.Length; i++)
             {
-                if (Player1.Skills[i].Healing > 0 && Player1.Skills[i].Damage <= 0)
+                if (Player1.Skills[i].Healing > 0)
                 {
                     SkillsDes[i] = $"{Player1.Skills[i].Name} Heal:{Player1.Skills[i].Healing} | Mpcost:{Player1.Skills[i].ManaCost}";
-                    comboBox1.Items.Add(SkillsDes[i]);
-                }
-                else if (Player1.Skills[i].Healing > 0 && Player1.Skills[i].Damage > 0)
-                {
-                    SkillsDes[i] = $"{Player1.Skills[i].Name} Dmg:{Player1.Skills[i].Damage} | Heal:{Player1.Skills[i].Healing} | Mpcost:{Player1.Skills[i].ManaCost}";
                     comboBox1.Items.Add(SkillsDes[i]);
                 }
                 else
@@ -70,7 +62,7 @@ namespace FerdiProj1
         {
             // Players Skill Initialization to Attack and Conditions
             //Checking if player have skills
-
+            
             if (currentPlayer.Skills.Count == 0)
             {
                 MessageBox.Show($"{currentPlayer.Name} has no skill");
@@ -84,7 +76,7 @@ namespace FerdiProj1
                 if (currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost <= currentPlayer.Mana)
                 {
                     currentPlayer.Useskill(currentPlayer.Skills[comboBox1.SelectedIndex], opponent, currentPlayer);
-                    typeofskill = currentPlayer.Skills[comboBox1.SelectedIndex].SkillType;
+                    currentPlayer.Healskill(currentPlayer.Skills[comboBox1.SelectedIndex].Healing, currentPlayer);
                     nameofskill = currentPlayer.Skills[comboBox1.SelectedIndex].Name;
                     currentPlayer.Mana -= currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost;
 
@@ -106,7 +98,7 @@ namespace FerdiProj1
                     if (currentPlayer.Skills[p2skill].ManaCost <= currentPlayer.Mana)
                     {
                         currentPlayer.Useskill(currentPlayer.Skills[p2skill], opponent, currentPlayer);
-                        typeofskill = currentPlayer.Skills[p2skill].SkillType;
+                        currentPlayer.Healskill(currentPlayer.Skills[p2skill].Healing, currentPlayer);
                         nameofskill = currentPlayer.Skills[p2skill].Name;
                         currentPlayer.Mana -= currentPlayer.Skills[p2skill].ManaCost;
                         goto outloop;
@@ -121,50 +113,41 @@ namespace FerdiProj1
             // Damage Calculations
             int DamageTaken = PreviousHp - opponent.Hp;
             // UI for health update
+            
             UpdateUI();
             // Indicators of skills which skill hit and player damage
 
             //Attack Miss & Healed indicator
 
-            if (typeofskill == "Heal")
+            if (currentPlayer.Hp == previoushp && currentPlayer.isHealed == true)
             {
-                label6.ForeColor = Color.SeaGreen;
-                label6.Text = $"{currentPlayer.Name} use {nameofskill} and healed {currentPlayer.Hp - previoushp} HP";
+                label6.ForeColor = Color.Red;
+                label6.Text = $"{currentPlayer.Name} is an idiot";
             }
-            else if (currentPlayer.isLanded == false)
+            else if (opponent.Hp == PreviousHp && currentPlayer.isHealed == false)
             {
                 label6.ForeColor = Color.Red;
                 label6.Text = $"{currentPlayer.Name} has missed the {nameofskill}";
             }
+            else if (currentPlayer.isHealed == false)
+            {
+                label6.ForeColor = Color.SeaGreen;
+                label6.Text = $"{currentPlayer.Name} has healed {currentPlayer.Hp - previoushp} HP";
+            }
             //Attack Landed
-            else if (currentPlayer.isLanded == true && typeofskill == "Attack" || typeofskill == "Lifesteal")
+            else if (opponent.Hp <= PreviousHp)
             {
                 label6.ForeColor = Color.Green;
                 // Attack Crited
                 if (currentPlayer.isCrited == true)
                 {
-                    if (typeofskill == "Lifesteal")
-                    {
-                        label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} critical damage\n{currentPlayer.Name} is healed {currentPlayer.Hp - previoushp} HP";
-                    }
-                    else
-                    {
-                        label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} critical damage";
-                    }
+                    label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} had taken {DamageTaken} critical";
                 }
                 //Attack Does not Crited
                 else if (currentPlayer.isCrited == false)
                 {
-                    if (typeofskill == "Lifesteal")
-                    {
-                        label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n{opponent.Name} has  taken {DamageTaken} damage\n{currentPlayer.Name} is healed {currentPlayer.Hp - previoushp} HP";
-                    }
-                    else
-                    {
-                        label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
-                    }
+                    label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
                 }
-
             }
             // Checking who win and reseting the game
             if (opponent.Hp == 0)
@@ -179,7 +162,6 @@ namespace FerdiProj1
         }
         private void SwapTurn()
         {
-            opponent.Manaregen(opponent);
             currentPlayer.Manaregen(currentPlayer);
             Player temp = currentPlayer;
             currentPlayer = opponent;
@@ -196,11 +178,6 @@ namespace FerdiProj1
             progressBar2.Value = Player2.Hp;
             progressBar3.Value = Player1.Mana;
             progressBar4.Value = Player2.Mana;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-       InitializeGame();
         }
     }
 }

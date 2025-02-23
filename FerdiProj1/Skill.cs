@@ -13,15 +13,13 @@ namespace FerdiProj1
         public int Accuracy { get; }
         public int ManaCost {get; }
         public int Healing { get; }
-        public string SkillType { get; }
-        public Skill(string name, int damage, int accuracy, int manacost, int heal, string skilltype)
+        public Skill(string name, int damage, int accuracy, int manacost, int heal)
         {
             Name = name;
             Damage = damage;
             Accuracy = accuracy;
             ManaCost = manacost;
             Healing = heal;
-            SkillType = skilltype;
         }
     }
 }

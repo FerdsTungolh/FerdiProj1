@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace FerdiProj1
+﻿namespace FerdiProj1
 {
     public class Player
     {
@@ -12,7 +10,6 @@ namespace FerdiProj1
         public int Mana { get; set; }
         public bool isCrited;
         public bool isHealed;
-        public bool isLanded;
         public int Manaregenrate { get; set; }
         public List<Skill> Skills { get; set; }
 
@@ -34,67 +31,51 @@ namespace FerdiProj1
         }
         public void Useskill(Skill skill, Player opponent, Player currentplayer)
         {
-            
-            if (skill.SkillType == "Attack" || skill.SkillType == "Lifesteal")
+            Random ran = new Random();
+            int hitchance = ran.Next(1, 101);
+            int critchance = ran.Next(1, 101);
+            if (hitchance > skill.Accuracy)
             {
-                Random ran = new Random();
-                int hitchance = ran.Next(1, 100);
-                if (hitchance > skill.Accuracy)
-                {
-                isLanded = false;
+                isHealed = false;
+                isCrited = false;
                 return;
-                }
-                else
-                {
-                    int critchance = ran.Next(1, 100);
-                    if (critchance > Crit)
-                    {
-                        int damage = (skill.Damage * 2) - opponent.Defense;
-                        damage = Math.Max(5, damage);
-                        opponent.Hp -= damage;
-                        opponent.Hp = Math.Max(0, opponent.Hp);
-                        isCrited = true;
-                        
-                    }
-                    else if (critchance <= Crit)
-                    {
-                        int damage = skill.Damage - opponent.Defense;
-                        damage = Math.Max(5, damage);
-                        opponent.Hp -= damage;
-                        opponent.Hp = Math.Max(0, opponent.Hp);
-                        isCrited = false;
-                    }
-                    if (skill.SkillType == "Lifesteal")
-                    {
-                        HealingSkill(skill, currentplayer);
-                    }
-                    isLanded = true;
-                }
+
             }
-            else if (skill.SkillType == "Heal")
+
+            if (critchance > Crit)
             {
-                HealingSkill(skill, currentplayer);
-            }
-             
-        }
-        public void HealingSkill (Skill skill, Player currentplayer)
-        {
-            if (skill.Healing > 0)
-            {
-                int healing = currentplayer.Hp + skill.Healing;
-                isHealed = true;
-                currentplayer.Hp = healing;
-                if (currentplayer.Hp >= 101)
-                {
-                    currentplayer.Hp = 100;
-                }
+                int damage = (skill.Damage * 2) - opponent.Defense;
+                damage = Math.Max(5, damage);
+                opponent.Hp -= damage;
+                opponent.Hp = Math.Max(0, opponent.Hp);
+                isCrited = true;
+                isHealed = false;
             }
             else
             {
+                int damage = skill.Damage - opponent.Defense;
+                damage = Math.Max(5, damage);
+                opponent.Hp -= damage;
+                opponent.Hp = Math.Max(0, opponent.Hp);
+                isCrited = false;
                 isHealed = false;
             }
         }
-
+        public void Healskill(int healingval, Player player)
+        {
+            {
+                if (healingval > 0)
+                {
+                    int healing = player.Hp + healingval;
+                    isHealed = true;
+                    player.Hp = healing;
+                    if (player.Hp >= 101)
+                    {
+                        player.Hp = 100;
+                    }
+                }
+            }
+        }
         public void Manaregen ( Player player)
         {
             {
