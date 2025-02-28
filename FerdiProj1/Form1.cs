@@ -224,7 +224,7 @@ namespace FerdiProj1
         }
         private void BackgroundFx()
         {
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\Ferdinand\Source\Repos\FerdiProj2\FerdiProj1\Resources\screaming-bird.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\tungo\Source\Repos\FerdiProj1\FerdiProj1\Resources\screaming-bird.wav");
             simpleSound.PlayLooping();
         }
         

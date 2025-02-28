@@ -28,56 +28,60 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            panel2 = new Panel();
+            components = new System.ComponentModel.Container();
             pictureBox1 = new PictureBox();
+            timer1 = new System.Windows.Forms.Timer(components);
+            pictureBox2 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
-            // 
-            // panel1
-            // 
-            panel1.BackColor = Color.SeaGreen;
-            panel1.Location = new Point(107, 326);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(48, 48);
-            panel1.TabIndex = 0;
-            // 
-            // panel2
-            // 
-            panel2.BackColor = Color.Red;
-            panel2.Location = new Point(549, 163);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(48, 48);
-            panel2.TabIndex = 1;
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = Properties.Resources._980dc67df49074c5efe8fb7e81534105_removebg_preview;
-            pictureBox1.Location = new Point(354, 326);
+            pictureBox1.BackColor = Color.Transparent;
+            pictureBox1.Location = new Point(398, 497);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(169, 121);
+            pictureBox1.Size = new Size(88, 88);
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
             // 
+            // timer1
+            // 
+            timer1.Enabled = true;
+            timer1.Interval = 20;
+            timer1.Tick += TimeEvent;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.BackColor = Color.Transparent;
+            pictureBox2.Image = Properties.Resources.Sasuke;
+            pictureBox2.Location = new Point(545, 86);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(80, 80);
+            pictureBox2.TabIndex = 3;
+            pictureBox2.TabStop = false;
+            // 
             // Map
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(909, 597);
+            Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
-            Controls.Add(panel2);
-            Controls.Add(panel1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Map";
-            Text = "Map";
+            Text = "w";
+            Paint += MapPaintEvent;
             KeyDown += Map_KeyDown_1;
+            KeyUp += Map_KeyUp;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Panel panel1;
-        private Panel panel2;
         private PictureBox pictureBox1;
+        private System.Windows.Forms.Timer timer1;
+        private PictureBox pictureBox2;
     }
 }
