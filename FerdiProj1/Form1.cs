@@ -1,3 +1,6 @@
+using FerdiProj1.Properties;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FerdiProj1
@@ -16,25 +19,30 @@ namespace FerdiProj1
         {
             InitializeComponent();
             InitializeGame();
+            BackgroundFx();
         }
 
         private void InitializeGame()
         {
-            //Player Health and Stats
-            Player1 = new Player("Naruto", 100, 50, 10, 50, 100, 5);
-            Player2 = new Player("Sasuke", 100, 50, 5, 50, 100, 5);
-            //Player 1 Skills Name and Stats
-            Player1.Addskill(new Skill("Basic Attack", 7, 95, 0, 0, "Attack"));
-            Player1.Addskill(new Skill("Shuriken", 15, 80, 10, 0, "Attack"));
-            Player1.Addskill(new Skill("Rasengan", 40, 30, 50, 0, "Attack"));
-            Player1.Addskill(new Skill("Rasen Shuriken", 25, 50, 20, 10, "Lifesteal"));
-            Player1.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal"));
-            //Player 2 Skills Name and Stats
-            Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, 0, "Attack"));
-            Player2.Addskill(new Skill("Chidori", 20, 80, 10, 0, "Attack"));
-            Player2.Addskill(new Skill("Raikiri", 25, 50, 20, 0, "Attack"));
-            Player2.Addskill(new Skill("Amaterasu", 45, 30, 50, 0, "Attack"));
-            Player2.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal"));
+            Player_and_Enemies_Stats stats = new Player_and_Enemies_Stats();
+            //Player Health and Stats (Name, Hp, Defense, Critrate, Mana, Mana regen)
+            Player_and_Enemies_Stats FirstPlayer = stats.Entity()[0];
+            Player_and_Enemies_Stats SecondPlayer = stats.Entity()[1];
+            Player1 = new Player(FirstPlayer.Name, FirstPlayer.Hp, FirstPlayer.Defense, FirstPlayer.Crit, FirstPlayer.Mana, FirstPlayer.Manaregenrate);
+            Player2 = new(SecondPlayer.Name, SecondPlayer.Hp, SecondPlayer.Defense, SecondPlayer.Crit, SecondPlayer.Mana, SecondPlayer.Manaregenrate);
+            
+            //Player 1 Skills Name and Stats (Name, Damage, Accuraccy, Manacost, Heal, Skilltype)
+            Player1.Addskill(new Skill("Basic Attack", 7, 95, 0, 0, "Attack", 0, 0));
+            Player1.Addskill(new Skill("Shuriken", 15, 80, 10, 0, "Attack" , 3, 2));
+            Player1.Addskill(new Skill("Rasengan", 40, 50, 50, 0, "Attack", 0, 0));
+            Player1.Addskill(new Skill("Rasen Shuriken", 25, 50, 20, 10, "Lifesteal", 0, 0));
+            Player1.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal", 0, 0));
+            //Player 2 Skills Name and Stats (Name, Damage, Accuraccy, Manacost, Heal, Skilltype)
+            Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, 0, "Attack", 0, 0));
+            Player2.Addskill(new Skill("Chidori", 20, 80, 10, 0, "Attack", 0, 0));
+            Player2.Addskill(new Skill("Raikiri", 25, 50, 20, 0, "Attack", 0, 0));
+            Player2.Addskill(new Skill("Amaterasu", 45, 30, 50, 0, "Attack", 2, 3));
+            Player2.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal", 0,0));
 
             currentPlayer = Player1;
             opponent = Player2;
@@ -44,25 +52,9 @@ namespace FerdiProj1
         private void Form1_Load(object sender, EventArgs e)
         {
             //Player 1 Skills Description for comboBox selection Automatic 
-            string[] SkillsDes = new string[Player1.Skills.Count];
-
-            for (int i = 0; i < SkillsDes.Length; i++)
+            for (int i = 0; i < Player1.Skills.Count; i++)
             {
-                if (Player1.Skills[i].Healing > 0 && Player1.Skills[i].Damage <= 0)
-                {
-                    SkillsDes[i] = $"{Player1.Skills[i].Name} Heal:{Player1.Skills[i].Healing} | Mpcost:{Player1.Skills[i].ManaCost}";
-                    comboBox1.Items.Add(SkillsDes[i]);
-                }
-                else if (Player1.Skills[i].Healing > 0 && Player1.Skills[i].Damage > 0)
-                {
-                    SkillsDes[i] = $"{Player1.Skills[i].Name} Dmg:{Player1.Skills[i].Damage} | Heal:{Player1.Skills[i].Healing} | Mpcost:{Player1.Skills[i].ManaCost}";
-                    comboBox1.Items.Add(SkillsDes[i]);
-                }
-                else
-                {
-                    SkillsDes[i] = $"{Player1.Skills[i].Name} Dmg:{Player1.Skills[i].Damage} | Mpcost:{Player1.Skills[i].ManaCost}";
-                    comboBox1.Items.Add(SkillsDes[i]);
-                }
+                    comboBox1.Items.Add($"{Player1.Skills[i].Name}");
             }
             comboBox1.SelectedIndex = 0;
         }
@@ -98,12 +90,21 @@ namespace FerdiProj1
             //Player 2 Skills Conditions and selections Auto skill selection
             else if (currentPlayer == Player2)
             {
-                Random ranskill = new Random();
+                 
+                    Random ranskill = new Random();
                 while (true)
                 {
                 inloop:
                     int p2skill = ranskill.Next(currentPlayer.Skills.Count);
-                    if (currentPlayer.Skills[p2skill].ManaCost <= currentPlayer.Mana)
+                    if (currentPlayer.Skills[4].ManaCost <= currentPlayer.Mana && currentPlayer.Hp <= 30)
+                    {
+                        currentPlayer.Useskill(currentPlayer.Skills[4], opponent, currentPlayer);
+                        typeofskill = currentPlayer.Skills[4].SkillType;
+                        nameofskill = currentPlayer.Skills[4].Name;
+                        currentPlayer.Mana -= currentPlayer.Skills[4].ManaCost;
+                        goto outloop;
+                    }
+                    else if (currentPlayer.Skills[p2skill].ManaCost <= currentPlayer.Mana)
                     {
                         currentPlayer.Useskill(currentPlayer.Skills[p2skill], opponent, currentPlayer);
                         typeofskill = currentPlayer.Skills[p2skill].SkillType;
@@ -115,7 +116,8 @@ namespace FerdiProj1
                     {
                         goto inloop;
                     }
-                }
+                    }
+                
             }
         outloop:
             // Damage Calculations
@@ -164,7 +166,6 @@ namespace FerdiProj1
                         label6.Text = $"{currentPlayer.Name} uses {nameofskill}\n {opponent.Name} has  taken {DamageTaken} damage";
                     }
                 }
-
             }
             // Checking who win and reseting the game
             if (opponent.Hp == 0)
@@ -176,11 +177,12 @@ namespace FerdiProj1
             }
             // Swaping for turn
             SwapTurn();
+           
         }
         private void SwapTurn()
         {
+           
             opponent.Manaregen(opponent);
-            currentPlayer.Manaregen(currentPlayer);
             Player temp = currentPlayer;
             currentPlayer = opponent;
             opponent = temp;
@@ -200,7 +202,36 @@ namespace FerdiProj1
 
         private void button2_Click(object sender, EventArgs e)
         {
-       InitializeGame();
+            InitializeGame();
+        }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+
+            listBox1.Items.Add($" Skill Name [{currentPlayer.Skills[comboBox1.SelectedIndex].Name}] Skill Type [{currentPlayer.Skills[comboBox1.SelectedIndex].SkillType}]");
+            if (currentPlayer.Skills[comboBox1.SelectedIndex].SkillType == "Attack")
+            {
+                listBox1.Items.Add($"Damage: {currentPlayer.Skills[comboBox1.SelectedIndex].Damage} | CharkaCost: {currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost} | Accuracy: {currentPlayer.Skills[comboBox1.SelectedIndex].Accuracy}");
+            }
+            else if (currentPlayer.Skills[comboBox1.SelectedIndex].SkillType == "Lifesteal")
+            {
+                listBox1.Items.Add($"Damage: {currentPlayer.Skills[comboBox1.SelectedIndex].Damage} | Heal: {currentPlayer.Skills[comboBox1.SelectedIndex].Healing} | ChakraCost: {currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost} | Accuracy {currentPlayer.Skills[comboBox1.SelectedIndex].Accuracy}");
+            }
+            else if (currentPlayer.Skills[comboBox1.SelectedIndex].SkillType == "Heal")
+            {
+                listBox1.Items.Add($"Heal: {currentPlayer.Skills[comboBox1.SelectedIndex].Healing} | ChakraCost: {currentPlayer.Skills[comboBox1.SelectedIndex].ManaCost} | Accuracy: {currentPlayer.Skills[comboBox1.SelectedIndex].Accuracy}");
+            }
+        }
+        private void BackgroundFx()
+        {
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\Ferdinand\Source\Repos\FerdiProj2\FerdiProj1\Resources\screaming-bird.wav");
+            simpleSound.PlayLooping();
+        }
+        
+        private void ComboBox1_SizeChanged(object? sender, EventArgs e)
+        {
+            
         }
     }
-}
+    }
+
