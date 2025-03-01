@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Map));
             pictureBox1 = new PictureBox();
             timer1 = new System.Windows.Forms.Timer(components);
             pictureBox2 = new PictureBox();
@@ -54,7 +55,7 @@
             // pictureBox2
             // 
             pictureBox2.BackColor = Color.Transparent;
-            pictureBox2.Image = Properties.Resources.Sasuke;
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
             pictureBox2.Location = new Point(545, 86);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(80, 80);

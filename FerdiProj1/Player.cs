@@ -9,6 +9,7 @@ namespace FerdiProj1
         public int Defense { get; set; }
         public int Crit { get; set; }
         public int Mana { get; set; }
+
         public bool isCrited;
         public bool isHealed;
         public bool isLanded;

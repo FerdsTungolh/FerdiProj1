@@ -14,10 +14,7 @@ namespace FerdiProj1
         public int ManaCost {get; }
         public int Healing { get; }
         public string SkillType { get; }
-
-        public int InflictDamage { get; }
-        public int TurnInflict {  get; }
-        public Skill(string name, int damage, int accuracy, int manacost, int heal, string skilltype, int inflictdamage, int turninflict)
+        public Skill(string name, int damage, int accuracy, int manacost, int heal, string skilltype)
         {
             Name = name;
             Damage = damage;
@@ -25,8 +22,6 @@ namespace FerdiProj1
             ManaCost = manacost;
             Healing = heal;
             SkillType = skilltype;
-            InflictDamage = inflictdamage;
-            TurnInflict = turninflict;
         }
     }
 }

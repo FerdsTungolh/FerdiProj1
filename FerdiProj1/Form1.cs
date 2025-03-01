@@ -25,24 +25,28 @@ namespace FerdiProj1
         private void InitializeGame()
         {
             Player_and_Enemies_Stats stats = new Player_and_Enemies_Stats();
-            //Player Health and Stats (Name, Hp, Defense, Critrate, Mana, Mana regen)
-            Player_and_Enemies_Stats FirstPlayer = stats.Entity()[0];
-            Player_and_Enemies_Stats SecondPlayer = stats.Entity()[1];
+
+            Player_and_Enemies_Stats FirstPlayer = stats.Entity()[1];
+            Player_and_Enemies_Stats SecondPlayer = stats.Entity()[0];
+            
+            pictureBox1.Image = Image.FromFile(FirstPlayer.PlayerImageRight);
+            pictureBox2.Image = Image.FromFile(SecondPlayer.PlayerImageLeft);
+
             Player1 = new Player(FirstPlayer.Name, FirstPlayer.Hp, FirstPlayer.Defense, FirstPlayer.Crit, FirstPlayer.Mana, FirstPlayer.Manaregenrate);
             Player2 = new(SecondPlayer.Name, SecondPlayer.Hp, SecondPlayer.Defense, SecondPlayer.Crit, SecondPlayer.Mana, SecondPlayer.Manaregenrate);
             
-            //Player 1 Skills Name and Stats (Name, Damage, Accuraccy, Manacost, Heal, Skilltype)
-            Player1.Addskill(new Skill("Basic Attack", 7, 95, 0, 0, "Attack", 0, 0));
-            Player1.Addskill(new Skill("Shuriken", 15, 80, 10, 0, "Attack" , 3, 2));
-            Player1.Addskill(new Skill("Rasengan", 40, 50, 50, 0, "Attack", 0, 0));
-            Player1.Addskill(new Skill("Rasen Shuriken", 25, 50, 20, 10, "Lifesteal", 0, 0));
-            Player1.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal", 0, 0));
-            //Player 2 Skills Name and Stats (Name, Damage, Accuraccy, Manacost, Heal, Skilltype)
-            Player2.Addskill(new Skill("Basic Attack", 9, 95, 0, 0, "Attack", 0, 0));
-            Player2.Addskill(new Skill("Chidori", 20, 80, 10, 0, "Attack", 0, 0));
-            Player2.Addskill(new Skill("Raikiri", 25, 50, 20, 0, "Attack", 0, 0));
-            Player2.Addskill(new Skill("Amaterasu", 45, 30, 50, 0, "Attack", 2, 3));
-            Player2.Addskill(new Skill("Healing Jutsu", 0, 100, 25, 20, "Heal", 0,0));
+            for (int sk = 0; sk < stats.EntitySkills().Count; sk++)
+            {
+                Player_and_Enemies_Stats PlayerSkills = stats.EntitySkills()[sk];
+                if (PlayerSkills.SkillEntity == FirstPlayer.Name)
+                {
+                    Player1.Addskill(new Skill(PlayerSkills.SkillName, PlayerSkills.SkillDamage, PlayerSkills.SkillAccuracy, PlayerSkills.SkillCost, PlayerSkills.SkillHeal, PlayerSkills.SkillType));
+                }
+                if (PlayerSkills.SkillEntity == SecondPlayer.Name)
+                {
+                    Player2.Addskill(new Skill(PlayerSkills.SkillName, PlayerSkills.SkillDamage, PlayerSkills.SkillAccuracy, PlayerSkills.SkillCost, PlayerSkills.SkillHeal, PlayerSkills.SkillType));
+                }
+            }
 
             currentPlayer = Player1;
             opponent = Player2;
@@ -224,8 +228,8 @@ namespace FerdiProj1
         }
         private void BackgroundFx()
         {
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\tungo\Source\Repos\FerdiProj1\FerdiProj1\Resources\screaming-bird.wav");
-            simpleSound.PlayLooping();
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\tungo\Source\Repos\FerdiProj1\FerdiProj1\Resources\Naruto Theme Song - Bad Flute Cover.wav");
+             simpleSound.PlayLooping();
         }
         
         private void ComboBox1_SizeChanged(object? sender, EventArgs e)

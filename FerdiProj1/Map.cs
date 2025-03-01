@@ -31,6 +31,7 @@ namespace FerdiProj1
         public Map()
         {
             InitializeComponent();
+            BackgroundFx();
             Setup();
         }
         
@@ -38,19 +39,17 @@ namespace FerdiProj1
         
         private void Collision()
         {
-            
+             
             if (pictureBox1.Bounds.IntersectsWith(pictureBox2.Bounds))
             {
                 Form1 form = new Form1();
                 form.Show();
                 this.Hide();
-
-                BackgroundFx();
             }
         }
         private void BackgroundFx()
         {
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\tungo\Source\Repos\FerdiProj1\FerdiProj1\Resources\screaming-bird.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\tungo\Source\Repos\FerdiProj1\FerdiProj1\Resources\Naruto - Main theme (Flute cover).wav");
             simpleSound.PlayLooping();
         }
 
